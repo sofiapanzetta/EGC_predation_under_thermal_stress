@@ -20,11 +20,12 @@ conflicted::conflict_prefer("filter", "dplyr")
 
 
 #loading data
-prey23 = read.csv(paste0(data_wd, "prey_data.csv"))
+prey23 = read.csv(paste0(data_wd, "J23_prey_data.csv"))
 
 prey23 <- subset(prey23, select = -X)
 prey23 <- subset(prey23, select = -X.1)
 prey23 <- subset(prey23, select = -X.2)
+
 
 prey24 = read.csv(paste0(data_wd, "M24_prey_data.csv"))
 
@@ -32,7 +33,6 @@ prey24 <- subset(prey24, select = -X)
 prey24 <- subset(prey24, select = -X.1)
 prey24 <- subset(prey24, select = -X.2)
 prey24 <- subset(prey24, select = -X.3)
-prey24 <- subset(prey24, select = -X.4)
 
 prey = rbind(prey23, prey24)
 
@@ -40,6 +40,17 @@ egc = read.csv(paste0(data_wd, "egc_data.csv"))
 
 tank = read.csv(paste0(data_wd, "tank_parameter.csv"))
 
+
+#removing trials 73 and 75 because of electrocution 
+
+prey <- filter(prey, crab_id!="EGC073")
+prey <- filter(prey, crab_id!="EGC075")
+
+egc <- filter(egc, crab_id!="EGC073")
+egc <- filter(egc, crab_id!="EGC075")
+
+tank <- filter(tank, crab_id!="EGC073")
+tank <- filter(tank, crab_id!="EGC075")
 
 #creating histogram to view what gaps in data I have
 #viewing gaps in temperature
@@ -166,11 +177,11 @@ ggplot(temp_carapace_width, aes(mean_temp, carapace_width_before)) +
 #glm grams of prey consumed by temp 
 ggplot(prey_weight_temp, aes(y=consumed_weight, x=mean_temp)) + 
   theme_classic() +
-  geom_point(alpha=3/5, shape=21, fill="blue", colour="black", size=8) +
+  geom_point(alpha=3/5, shape=21, fill="blue", colour="black", size=6) +
   geom_smooth(method = "lm", se = FALSE, 
               formula = my.formula, 
               colour = "red") +
-  theme(text = element_text(size=42)) +
+  theme(text = element_text(size=20)) +
   labs(y = "Weight of prey consumed (g)", x= "Average temperature (°C)")
 
 
